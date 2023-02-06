@@ -1,0 +1,10 @@
+#referece genome and other downloaded
+GRCh37_v19/
+precomputed_bedgraph/
+rat_ref/
+#running logs
+scripts/*.log
+nohup.out
+#binary tools
+tools/
+
