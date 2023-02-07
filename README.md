@@ -1,7 +1,15 @@
 # Compute the cross mappability for rat genome
 1. Reference genome versions and other details can be found in [RatGTExPortal](https://ratgtex.org/about/).
-2. Cross-mappability calculated based on [this](https://github.com/battle-lab/crossmap)i
+	1. Libraries were sequenced using 150-bp paired-end sequencing. 
+2. Cross-mappability calculated based on [this](https://github.com/battle-lab/crossmap)
+## Preparation of files
 	1. Run gem_index.sh to index genome, take about 1 hour to index whole rat genome.
 		* Using 12G memory.
 		* The BigWig output contains a column with dna, need to remove this column for downstream process.
+		* The paper tested different lengths of k-mer but didn't provide any details about how to choose k-mer. Based on the descrition, they use the read length as the length for exon. So we are going to use the same setting here.
+	2. Potential issues:
+		* The paper build index using Bowtie which may not aware of the splicing event.
 	2. Download bowtie 1.2.2 and index genemo using command `bowtiew-build <ref_genome> <prefix>`.
+		* Bowtie does not work in Expanse, not sure why. Build index in snorlax.
+## Compute Cross-mappability 
+1. R r/4.0.2-openblas

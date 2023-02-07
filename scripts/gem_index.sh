@@ -17,12 +17,15 @@ gem_index_pref=gem_indexed_${k}mer
 gem_mappability_pref=mappability_${k}mer_2mismatch
 
 #set -e
-#echo "start index"
-#time gem-indexer -T ${n_threads} -c dna -i ${genome_fasta} -o "${output_dir}/${gem_index_pref}"
-#echo "finish index and comput mappability"
-#time gem-mappability -m ${n_mismatch} -T ${n_threads} -I ${output_dir}/${gem_index_pref}.gem -l ${k} -o ${output_dir}/${gem_mappability_pref}
-#echo "Done mappability,convert gem to wig"
-#gem-2-wig -I ${output_dir}/${gem_index_pref}.gem -i ${output_dir}/${gem_mappability_pref}.mappability -o ${output_dir}/${gem_mappability_pref}
+echo "start index"
+time gem-indexer -T ${n_threads} -c dna -i ${genome_fasta} -o "${output_dir}/${gem_index_pref}"
+echo "finish index and comput mappability"
+time gem-mappability -m ${n_mismatch} -T ${n_threads} -I ${output_dir}/${gem_index_pref}.gem -l ${k} -o ${output_dir}/${gem_mappability_pref}
+echo "finish mappability,convert gem to wig"
+gem-2-wig -I ${output_dir}/${gem_index_pref}.gem -i ${output_dir}/${gem_mappability_pref}.mappability -o ${output_dir}/${gem_mappability_pref}
+#remove the invalid column
+awk '{print $1"\t"$2"\t"$4}' ${output_dir}/${gem_mappability_pref}.wig > ${output_dir}/${gem_mappability_pref}_cleaned.wig
+awk '{print $1"\t"$3}' ${output_dir}/${gem_mappability_pref}.sizes > ${output_dir}/${gem_mappability_pref}_cleaned.sizes
 echo "Covert wig to BigWig"
 wigToBigWig ${output_dir}/${gem_mappability_pref}_cleaned.wig ${output_dir}/${gem_mappability_pref}_cleaned.sizes ${output_dir}/${gem_mappability_pref}.bigwig
 echo "covert bigWig to BedGrap"
