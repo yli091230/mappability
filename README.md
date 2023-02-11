@@ -1,7 +1,7 @@
 # Compute the cross mappability for rat genome
 1. Reference genome versions and other details can be found in [RatGTExPortal](https://ratgtex.org/about/).
 	1. Libraries were sequenced using 150-bp paired-end sequencing. 
-2. Cross-mappability calculated based on [this](https://github.com/battle-lab/crossmap)
+2. Cross-mappability calculated based on [original for human](https://github.com/battle-lab/crossmap), [modified for rat](https://github.com/yli091230/crossmap)
 ## Preparation of files
 	1. Run gem_index.sh to index genome, take about 1 hour to index whole rat genome.
 	* Need to make a copy of reference genome that splitted by chromosome for downstream analysis.
