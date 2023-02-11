@@ -21,3 +21,5 @@
 	3. In the compute_mappability.R and gtf_to_bed.R, need to  change the code to get the utr in rat gtf which specified as 'three_prime_utr', 'five_prime_utr'.
 	4. In the compute_mappability.R, the rat ref genome contains more contigs, some contigs only exist in exon, need to change the code avoid error message.
 * Export bowtie path
+
+2. Run set_variables.sh in an interactive node 
