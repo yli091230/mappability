@@ -3,6 +3,7 @@ GRCh37_v19/
 precomputed_bedgraph/
 rat_ref/
 rat_ref_ensemble/
+rat_cross_mappability*/
 #running logs
 scripts/*.log
 nohup.out
