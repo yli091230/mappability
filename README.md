@@ -16,10 +16,10 @@
 1. Modules need to be load :
 * R: r/4.0.2-openblas, cpu/0.15.4  gcc/9.2.0
 * Modifications to the cross_mappability repository:
-1. For all Rscript, need the change the argpharser - to --
-2. Need to install library, using env.R files. Add library path to all scripts.
-3. In the compute_mappability.R and gtf_to_bed.R, need to  change the code to get the utr in rat gtf which specified as 'three_prime_utr', 'five_prime_utr'.
-4. In the compute_mappability.R, the rat ref genome contains more contigs, some contigs only exist in exon, need to change the code avoid error message.
+	1. For all Rscript, need the change the argpharser - to --
+	2. Need to install library, using env.R files. Add library path to all scripts.
+	3. In the compute_mappability.R and gtf_to_bed.R, need to  change the code to get the utr in rat gtf which specified as 'three_prime_utr', 'five_prime_utr'.
+	4. In the compute_mappability.R, the rat ref genome contains more contigs, some contigs only exist in exon, need to change the code avoid error message.
 * Export bowtie path
 
 2. To run jobs:
