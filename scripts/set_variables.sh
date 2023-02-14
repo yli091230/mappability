@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#expanse account for submitting jobs
+account=$1
 export PATH=/expanse/protected/gymreklab-dbgap/mount/yal084/Cynthia_project/mappability/tools/bowtie-1.2.2-linux-x86_64:$PATH
 
 
@@ -27,7 +29,7 @@ comp_dir=/expanse/protected/gymreklab-dbgap/mount/yal084/Cynthia_project/mappabi
 # maximum number of chromosomes to load in memory at a time
 max_chr=7
 # maximum number of genes to align before cleaning alignments
-max_gene_alignment=200
+max_gene_alignment=300
 # length of the sub-directory names. First dir_len letters from gene
 dir_name_len=12
 # verbose output? 1 for verbose, 0 for non-verbose
@@ -41,7 +43,7 @@ if [ ! -d $log_dir ]; then mkdir -p $log_dir; fi
 #
 
 # slurm utility
-use_slurm=0  # use slurm (1: use, 0: don't use)
+use_slurm=1  # use slurm (1: use, 0: don't use)
 
 slurm_partition="ind-shared"
 source $prog_dir/slurm_util.sh
@@ -177,11 +179,14 @@ log_fn="${log_dir}/compute_cross_mappability_1_init.log"
 
 # actually compute cross-mappability (-initonly FALSE)
 n_gene_in_mappability_file=$(wc -l $mappability_fn | sed 's/ .*//g')
-for n1 in $(seq 1 $n_gene_per_crossmap_batch $n_gene_in_mappability_file)
+n_gene_in_mappability_file=10000
+for n1 in $(seq 8001 $n_gene_per_crossmap_batch $n_gene_in_mappability_file)
 do
   n2=$(($n1+$n_gene_per_crossmap_batch-1))
   script_fn="${script_dir}/compute_cross_mappability_2_${n1}_${n2}.sh"
   log_fn="${log_dir}/compute_cross_mappability_2_${n1}_${n2}.log"
+  echo 'echo $PATH' > "${script_fn}"
+  echo  'export PATH=/expanse/protected/gymreklab-dbgap/mount/yal084/Cynthia_project/mappability/tools/bowtie-1.2.2-linux-x86_64:$PATH' >> "$script_fn"
   echo "Rscript \"$prog_dir/compute_cross_mappability.R\" --annot \"$exon_utr_annot_fn\" \
                                       --mappability \"$mappability_fn\" \
                                       --kmer \"$ambiguous_kmer_dir\" \
@@ -196,15 +201,15 @@ do
                                       --dir_name_len $dir_name_len \
                                       --verbose $verbose \
                                       -o \"$cross_mappability_dir\" \
-                                      2>&1 | tee \"$log_fn\"" > "$script_fn"
-  run_script "$script_fn" $slurm_partition 1 1 "48:0:0" "20GB"
+                                      2>&1 | tee \"$log_fn\"" >> "$script_fn"
+  run_script "$script_fn" $slurm_partition 1 1 "24:0:0" "24GB" ${account}
   # Memory: 14GB, Time: 35 hours
 done
-echo "################Finish cross-mappability computation##################"
-# combine all cross-mappability results into one file
-combined_cross_mappability_fn="$comp_dir/cross_mappability.txt"
-if [ -f $combined_cross_mappability_fn ]; then rm "$combined_cross_mappability_fn";  fi
-for fn in "$cross_mappability_dir"/*/*.crossmap.txt
-do
-  cat $fn >> "$combined_cross_mappability_fn"
-done
+echo "################Job for genes ${n1}:${n2} cross-mappability computation##################"
+## combine all cross-mappability results into one file
+#combined_cross_mappability_fn="$comp_dir/cross_mappability.txt"
+#if [ -f $combined_cross_mappability_fn ]; then rm "$combined_cross_mappability_fn";  fi
+#for fn in "$cross_mappability_dir"/*/*.crossmap.txt
+#do
+#  cat $fn >> "$combined_cross_mappability_fn"
+#done
