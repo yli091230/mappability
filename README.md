@@ -11,7 +11,7 @@
 2. Potential issues:
 * The paper build index using Bowtie which may not aware of the splicing event.
 3. Download bowtie 1.2.2 and index genemo using command `bowtiew-build <ref_genome> <prefix>`.
-* Bowtie does not work in Expanse, not sure why. Build index in snorlax.
+* Bowtie does not work on Expanse, not sure why. Built the index on snorlax.
 ## Compute Cross-mappability 
 1. Modules need to be load :
 * R: r/4.0.2-openblas, cpu/0.15.4  gcc/9.2.0
@@ -23,5 +23,6 @@
 * Export bowtie path
 
 2. To run jobs:
+* Haven't optimized the workflow, just used the original one. There are different part in `set_variables.sh`, run each single part sequentially by comment off other parts. Maybe use snakemake to better organize the workflow. 
 * Set user_slurm=0, Run `bash set_variables.sh` in an interactive node
 * Set user_slurm=1, Run `bash set_variables.sh <expans_account>` to submit jobs   
